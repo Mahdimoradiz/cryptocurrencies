@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+.date {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  }
+</style>
+  </head>
+  <body>
+
+    <div class="date">
+      <div id="current_datetime"></div>
+    </div>
+
+    <table id="customers">
+      <tr>
+        <th scope='col'>Logo</th>
+        <th scope='col'>Name</th>
+        <th scope='col'>Rank</th>
+        <th scope='col'>Market cap</th>
+        <th scope='col'>Price</th>
+      </tr>
+      {% for obj in data %}
+      <tr>
+        <td><img src={{obj.image}} height='70'></td>
+        <td class="align-middle">{{ obj.name }}</td>
+        <td class="align-middle">{{ obj.market_cap_rank }}</td>
+        <td class="align-middle">${{ obj.market_cap }}</td>
+        <td class="align-middle">${{ obj.current_price }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script>
+    function updateDateTime() {
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/coin/time',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $('#current_datetime').text('' + data.current_datetime);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        updateDateTime();
+    });
+
+    setInterval(function() {
+        updateDateTime();
+    }, 1000);
+</script>
+
+  </body>
+</html>
