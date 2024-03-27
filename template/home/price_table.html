@@ -50,6 +50,7 @@
         <th scope='col'>Market cap</th>
         <th scope='col'>Price</th>
       </tr>
+      {% if data %}
       {% for obj in data %}
       <tr>
         <td><img src={{obj.image}} height='70'></td>
@@ -59,6 +60,8 @@
         <td class="align-middle">${{ obj.current_price }}</td>
       </tr>
       {% endfor %}
+      {% else %}
+      {% endif %}
     </table>
 
   
